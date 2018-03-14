@@ -1,14 +1,15 @@
+CREATE DATABASE IF NOT EXISTS a DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 -- 创建图书表
 CREATE TABLE `book` ( 
-  `bookId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '图书ID',
-  `name` varchar(100) NOT NULL COMMENT '图书名称',
-  `introd` varchar(1000) NOT NULL COMMENT '简介',
-  `number` int(11) NOT NULL COMMENT '馆藏数量',
-  PRIMARY KEY (`book_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图书表';
+  `bookId` INT(11) NOT NULL AUTO_INCREMENT COMMENT '图书ID',
+  `name` VARCHAR(100) NOT NULL COMMENT '图书名称',
+  `introdction` VARCHAR(1000) NOT NULL COMMENT '简介',
+  `number` INT(11) NOT NULL COMMENT '馆藏数量',
+  PRIMARY KEY (`bookId`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='图书表';
 
 -- 初始化图书数据
-INSERT INTO `book` (`bookId`, `name`, `introd`,`number`)
+INSERT INTO `book` (`bookId`, `name`, `introdction`,`number`)
 VALUES
 	(1000, 'Java程序设计', 'Java程序设计是一门balbal',10),
 	(1001, '数据结构','数据结构是计算机存储、组织数据的方式。数据结构是指相互之间存在一种或多种特定关系的数据元素的集合。', 10),
@@ -20,28 +21,19 @@ VALUES
 
 -- 创建预约图书表
 CREATE TABLE `appointment` (
-  `bookId` bigint(20) NOT NULL COMMENT '图书ID',
-  `studentId` bigint(20) NOT NULL COMMENT '学号',
-  `appointTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '预约时间' ,
+  `id` INT(11) NOT NULL COMMENT 'ID',
+  `bookId` INT(11) NOT NULL COMMENT '图书ID',
+  `studentId` INT(11) NOT NULL COMMENT '学号',
+  `appointTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '预约时间' ,
   PRIMARY KEY (`bookId`, `studentId`),
   INDEX `idx_appoint_time` (`appointTime`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预约图书表';
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='预约图书表';
 -- 创建学生数据表
-CREATE TABLE `appointment` (
-   `bookId` bigint(20) NOT NULL,
-   `studentId` bigint(20) NOT NULL,
-   `appointTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '预约时间',
-   PRIMARY KEY (`bookId`,`studentId`),
-   KEY `idx_appoint_time` (`appointTime`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='预约图书表'	
--- 初始化学生数据
-INSERT INTO `student`(`student_id`,`password`) 
-VALUES
-	(3211200801,346543),
-	(3211200802,754323),
-	(3211200803,674554),
-	(3211200804,542344),
-	(3211200805,298383),
-	(3211200806,873973),
-	(3211200807,193737),
-	(3211200808,873092);
+CREATE TABLE `student`(
+	`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`studentNum` VARCHAR(20) NOT NULL COMMENT '学生ID',
+	`studentInfoId` INT(11) NOT NULL COMMENT '学生详细信息ID',
+	`password`  VARCHAR(20) NOT NULL COMMENT '密码',
+	PRIMARY KEY(`id`),
+	INDEX `idx_studentNum` (`studentNum`)
+)ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='学生统计表';

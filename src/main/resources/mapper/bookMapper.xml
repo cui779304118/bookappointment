@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.bookappointment.dao.IBookDao">
+
+<resultMap type="book" id="bookMap">
+	<id property="bookId" column="bookId"/>
+	<result property="name" column="name"/> 
+	<result property="introdction" column="introdction"/>
+	<result property="number" column="number"/>
+</resultMap>
+
+<sql id="tableName">
+	book
+</sql>
+
+<sql id="field">
+	bookId,name,introdction,number
+</sql>
+
+<sql id="searchCondition">
+	<if test="bookId != null">
+	 and bookId = #{bookId}
+	</if>
+	<if test="name != null and name !=''">
+	and name = #{name}
+	</if>
+</sql>
+
+<insert id="save" parameterType="book" useGeneratedKeys="true" keyProperty="bookId">
+	insert into <include refid="tableName"/> (name,introdction,number) values (#{name},#{introdction},#{number})
+</insert>
+<delete id="delete" parameterType="int">
+	delete from <include refid="tableName"/> where bookId = #{bookId}
+</delete>
+
+<update id="update" parameterType="book">
+	update <include refid="tableName"/> 
+	<trim prefix="set" suffixOverrides=",">
+		<if test="name !=null and name !=''">
+			name=#{name},
+		</if>
+		<if test="introdction !=null and introdction !='' ">
+			introdction=#{introdction},
+		</if>
+		<if test="number !=null">
+			number = #{number}
+		</if>
+	</trim>
+		where bookId = #{bookId}
+</update>
+
+<select id="count" parameterType="book" resultType="int">
+	select count(*) from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/> 	
+</select>
+<select id="list" parameterType="book" resultMap="bookMap">
+	select <include refid="field"/> from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/>
+</select>
+<select id="listByPage" parameterType="map" resultMap="bookMap">
+	select <include refid="field"/> from <include refid="tableName"/> order by bookId
+	limit #{offset},#{pageCount}
+</select>
+
+
+</mapper>

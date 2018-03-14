@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.bookappointment.dao.IStudentDao">
+
+<resultMap type="student" id="studentMap">
+	<id property="id" column="id"/>
+	<result property="studentNum" column="studentNum"/> 
+	<result property="studentInfoId" column="studentInfoId"/>
+</resultMap>
+
+<sql id="tableName">
+	student
+</sql>
+
+<sql id="field">
+	id,studentNum,studentInfoId
+</sql>
+
+<sql id="searchCondition">
+	<if test="id != null">
+	 and id= #{id}
+	</if>
+	<if test="studentNum != null and studentNum !=''">
+	and studentNum = #{studentNum}
+	</if>
+</sql>
+
+<insert id="save" parameterType="student" useGeneratedKeys="true" keyProperty="id">
+	insert into <include refid="tableName"/> (id,studentNum,studentInfoId,password) values (#{id},#{studentNum},#{studentInfoId},#{password})
+</insert>
+<delete id="delete" parameterType="int">
+	delete from <include refid="tableName"/> where id = #{id}
+</delete>
+
+<update id="update" parameterType="student">
+	update <include refid="tableName"/> set password = #{password}
+	where studentNum = #{studentNum}
+</update>
+
+<select id="count" parameterType="student" resultType="int">
+	select count(*) from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/> 	
+</select>
+<select id="list" parameterType="student" resultMap="studentMap">
+	select <include refid="field"/> from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/>
+</select>
+<select id="listByPage" parameterType="map" resultMap="studentMap">
+	select <include refid="field"/> from <include refid="tableName"/> order by id
+	limit #{offset},#{pageCount}
+</select>
+</mapper>

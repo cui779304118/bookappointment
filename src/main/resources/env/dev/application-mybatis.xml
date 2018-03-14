@@ -38,7 +38,7 @@
   <!--  	<property name="configLocation">
    		<value>classpath:mybatis-config.xml</value>
    	</property> -->
-   	<property name="mapperLocations" value="classpath:mapping/*.xml"></property>
+   	<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
     <property name="typeAliasesPackage" value="com.cw.bookappointment.entity"></property>
    </bean>
    
@@ -53,7 +53,7 @@
    	<property name="dataSource" ref="dataSourceWR"/>
    	<property name="rollbackOnCommitFailure" value="true"/>
    	<qualifier value="cw"/>
-   </bean>
+   </bean> 
    
    <tx:annotation-driven transaction-manager="transactionManager"/>
                      

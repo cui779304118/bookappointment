@@ -1,9 +1,11 @@
 package com.cw.bookappointment.entity;
 
 public class Student {
-	private Integer studentId;
+	private Integer id;
 	private String studentNum;
 	private Integer studentInfoId;
+	private String password;
+	
 	public String getStudentNum() {
 		return studentNum;
 	}
@@ -16,19 +18,18 @@ public class Student {
 	public void setStudentInfoId(Integer studentInfoId) {
 		this.studentInfoId = studentInfoId;
 	}
-	private String password;
 	
-	public Integer getStudentId() {
-		return studentId;
-	}
-	public void setStudentId(Integer studentId) {
-		this.studentId = studentId;
-	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	
