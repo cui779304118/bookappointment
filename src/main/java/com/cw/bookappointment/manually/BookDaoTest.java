@@ -52,7 +52,7 @@ public class BookDaoTest {
 		
 		PageModel pageModel = new PageModel();
 		pageModel.setOffset(0);
-		pageModel.setPageCount(5);
+		pageModel.setPageCount(3);
 		List<Book> list = bookDao.listByPage(pageModel);
 		for(Book b : list){
 			System.out.println(b);

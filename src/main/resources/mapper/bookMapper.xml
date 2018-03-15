@@ -52,10 +52,13 @@
 <select id="count" parameterType="book" resultType="int">
 	select count(*) from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/> 	
 </select>
+<select id="get" parameterType="int" resultType="bookMap">
+	select <include refid="field"/> from <include refid="tableName"/> where bookId = #{bookId}
+</select>
 <select id="list" parameterType="book" resultMap="bookMap">
 	select <include refid="field"/> from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/>
 </select>
-<select id="listByPage" parameterType="map" resultMap="bookMap">
+<select id="listByPage" parameterType="pageModel" resultMap="bookMap">
 	select <include refid="field"/> from <include refid="tableName"/> order by bookId
 	limit #{offset},#{pageCount}
 </select>

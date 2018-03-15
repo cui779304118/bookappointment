@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.bookappointment.dao.IAppointmentDao">
+
+<resultMap type="appointment" id="appointmentMap">
+	<id property="id" column="id"/>
+	<result property="bookId" column="bookId"/> 
+	<result property="studentId" column="studentId"/>
+	<result property="appointTime" column="appointTime"/>
+</resultMap>
+
+<sql id="tableName">
+	appointment
+</sql>
+
+<sql id="field">
+	id,bookId,studentId,appointTime
+</sql>
+
+<sql id="searchCondition">
+    <if test="id != null">
+     and id =#{id}
+     </if>
+	<if test="bookId != null">
+	 and bookId = #{bookId}
+	</if>
+	<if test="studentId != null">
+	and studentId = #{studentId}
+	</if>
+	<if test="appointTime != null">
+	and appointTime = #{appointTime}
+	<!-- and Date_format(appointTime,'%Y-%m-%d %H') = Date_format(#{appointTime},'%Y-%m-%d %H') -->
+	</if>
+	
+</sql>
+<sql id="searchConditionForPage">
+    <if test="pageModel.id != null">
+     and id =#{pageModel.id}
+     </if>
+	<if test="pageModel.bookId != null">
+	 and bookId = #{pageModel.bookId}
+	</if>
+	<if test="pageModel.studentId != null">
+	and studentId = #{pageModel.studentId}
+	</if>
+	<if test="pageModel.appointTime != null">
+	and appointTime = #{pageModel.appointTime}
+	<!-- and Date_format(appointTime,'%Y-%m-%d %H') = Date_format(#{pageModel.appointTime},'%Y-%m-%d %H') -->
+	</if>
+</sql>
+
+<insert id="save" parameterType="appointment" useGeneratedKeys="true" keyProperty="id">
+	insert into <include refid="tableName"/> (name,bookId,studentId) values (#{name},#{bookId},#{studentId})
+</insert>
+<delete id="delete" parameterType="int">
+	delete from <include refid="tableName"/> where id = #{id}
+</delete>
+
+<update id="update" parameterType="appointment">
+	update <include refid="tableName"/> 
+	<trim prefix="set" suffixOverrides=",">
+		<if test="bookId !=null">
+			bookId = #{bookId},
+		</if>
+		<if test="studentId !=null">
+			studentId = #{studentId},
+		</if>
+		<if test="appointTime !=null">
+			appointTime = #{appointTime}
+		</if>
+	</trim>
+		where id = #{id}
+</update>
+
+<select id="count" parameterType="appointment" resultType="int">
+	select count(*) from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/> 	
+</select>
+<select id="list" parameterType="appointment" resultMap="appointmentMap">
+	select <include refid="field"/> from <include refid="tableName"/> where 1=1 <include refid="searchCondition"/>
+</select>
+<select id="listByPage" parameterType="pageModel" resultMap="appointmentMap">
+	select <include refid="field"/> from <include refid="tableName"/> order by appointTime
+	limit #{offset},#{pageCount}
+</select>
+
+<select id="selectByPage" parameterType="map" resultMap="appointmentMap">
+	select <include refid="field"/> from <include refid="tableName"/> where <include refid="searchConditionForPage"/>
+	order by appointTime
+	limit #{pageModel.offset},#{pageModel.pageCount}
+</select>
+</mapper>

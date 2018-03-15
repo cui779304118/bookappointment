@@ -1,0 +1,9 @@
+一、student:
+1、注册接口；（新增加一个student，并且保存studentNum和password）
+2、登录接口；(通过sudent和password查询student表，成功则返回student，将其保存在session中)
+3、修改密码：（update student表中的password）
+
+二、book:
+1、查询所有图书；
+2、根据id查询图书；（显示详细信息）
+3、更新number
