@@ -5,7 +5,7 @@
 <resultMap type="appointment" id="appointmentMap">
 	<id property="id" column="id"/>
 	<result property="bookId" column="bookId"/> 
-	<result property="studentId" column="studentId"/>
+	<result property="studentNum" column="studentNum"/>
 	<result property="appointTime" column="appointTime"/>
 </resultMap>
 
@@ -14,7 +14,7 @@
 </sql>
 
 <sql id="field">
-	id,bookId,studentId,appointTime
+	id,bookId,studentNum,appointTime
 </sql>
 
 <sql id="searchCondition">
@@ -24,8 +24,8 @@
 	<if test="bookId != null">
 	 and bookId = #{bookId}
 	</if>
-	<if test="studentId != null">
-	and studentId = #{studentId}
+	<if test="studentNum != null">
+	and studentNum = #{studentNum}
 	</if>
 	<if test="appointTime != null">
 	and appointTime = #{appointTime}
@@ -40,8 +40,8 @@
 	<if test="pageModel.bookId != null">
 	 and bookId = #{pageModel.bookId}
 	</if>
-	<if test="pageModel.studentId != null">
-	and studentId = #{pageModel.studentId}
+	<if test="pageModel.studentNum != null">
+	and studentNum = #{pageModel.studentNum}
 	</if>
 	<if test="pageModel.appointTime != null">
 	and appointTime = #{pageModel.appointTime}
@@ -50,7 +50,7 @@
 </sql>
 
 <insert id="save" parameterType="appointment" useGeneratedKeys="true" keyProperty="id">
-	insert into <include refid="tableName"/> (name,bookId,studentId) values (#{name},#{bookId},#{studentId})
+	insert into <include refid="tableName"/> (name,bookId,studentNum) values (#{name},#{bookId},#{studentNum})
 </insert>
 <delete id="delete" parameterType="int">
 	delete from <include refid="tableName"/> where id = #{id}
@@ -62,8 +62,8 @@
 		<if test="bookId !=null">
 			bookId = #{bookId},
 		</if>
-		<if test="studentId !=null">
-			studentId = #{studentId},
+		<if test="studentNum !=null">
+			studentNum = #{studentNum},
 		</if>
 		<if test="appointTime !=null">
 			appointTime = #{appointTime}
@@ -87,5 +87,11 @@
 	select <include refid="field"/> from <include refid="tableName"/> where <include refid="searchConditionForPage"/>
 	order by appointTime
 	limit #{pageModel.offset},#{pageModel.pageCount}
+</select>
+
+<select id="getByStuIdAndBookId" resultMap="appointmentMap">
+	select <include refid="field"/> from <include refid="tableName"/>
+	 where studentNum = #{studentNum} and bookId = #{bookId}
+
 </select>
 </mapper>

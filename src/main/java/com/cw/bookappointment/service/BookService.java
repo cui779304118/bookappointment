@@ -45,4 +45,12 @@ public interface BookService {
 	 * @return
 	 */
 	public boolean deleteBook(Integer id);
+	
+	/**
+	 * 
+	 * @param studentId
+	 * @param bookId
+	 * @return
+	 */
+	public Integer appoint(String studentId, String bookId);
 }

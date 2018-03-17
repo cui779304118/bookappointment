@@ -5,7 +5,7 @@ import java.util.Date;
 public class Appointment {
 	private Integer id;
 	private Integer bookId;
-	private Integer studentId;
+	private String studentNum;
 	private Date appointTime;
 	
 	public Integer getBookId() {
@@ -14,11 +14,11 @@ public class Appointment {
 	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
-	public Integer getStudentId() {
-		return studentId;
+	public String getStudentNum() {
+		return studentNum;
 	}
-	public void setStudentId(Integer studentId) {
-		this.studentId = studentId;
+	public void setStudentNum(String studentNum) {
+		this.studentNum = studentNum;
 	}
 	public Date getAppointTime() {
 		return appointTime;

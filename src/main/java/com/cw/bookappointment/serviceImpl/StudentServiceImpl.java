@@ -22,7 +22,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public Integer addStudent(Student student) {
 		String password = MD5Util.generateMD5(student.getPassword());
-		if(StringUtils.isEmpty(password)){
+		if(!StringUtils.isEmpty(password)){
 			student.setPassword(password);
 		}
 		try {

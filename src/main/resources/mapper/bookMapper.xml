@@ -62,6 +62,4 @@
 	select <include refid="field"/> from <include refid="tableName"/> order by bookId
 	limit #{offset},#{pageCount}
 </select>
-
-
 </mapper>
