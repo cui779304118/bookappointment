@@ -14,9 +14,9 @@ public class BookDaoTest {
 	public static void main(String[] args) {
 		String path = "classpath:env/dev/applicationContext.xml";
 		IBookDao bookDao = createDao(path);
-//		testInsert(bookDao);
+		testInsert(bookDao);
 //		testUpdate(bookDao);
-		testList(bookDao);
+//		testList(bookDao);
 //		testDelete(bookDao);
 
 	}
@@ -52,7 +52,7 @@ public class BookDaoTest {
 		
 		PageModel pageModel = new PageModel();
 		pageModel.setOffset(0);
-		pageModel.setPageCount(3);
+		pageModel.setPageCount(5);
 		List<Book> list = bookDao.listByPage(pageModel);
 		for(Book b : list){
 			System.out.println(b);

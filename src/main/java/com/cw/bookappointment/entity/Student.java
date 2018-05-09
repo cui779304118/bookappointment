@@ -31,6 +31,8 @@ public class Student {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+	public String toString(){
+		return "id:" + id + ",studentNum:" + studentNum + ",studentInfoId:" + studentInfoId + ";";
+	}
 	
 }

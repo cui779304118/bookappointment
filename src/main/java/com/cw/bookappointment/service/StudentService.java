@@ -2,9 +2,12 @@ package com.cw.bookappointment.service;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cw.bookappointment.entity.Student;
+import com.cw.bookappointment.entity.StudentInfo;
 
 public interface StudentService {
+
 	/**
 	 * 
 	 * @param student
@@ -14,7 +17,7 @@ public interface StudentService {
 
 	/**
 	 * 
-	 * @param student
+	 * @param id
 	 * @return
 	 */
 	public boolean deleteStudent(Integer id);
@@ -37,4 +40,18 @@ public interface StudentService {
 	 * @return
 	 */
 	public List<Student> listStudent(Student student);
+
+	/**
+	 *
+	 * @param studentInfo
+	 * @return
+	 */
+	public int insertStudentInfo(StudentInfo studentInfo);
+
+	/**
+	 *
+	 * @param studentInfoId
+	 * @return
+	 */
+	public StudentInfo getStudentInfo(int studentInfoId);
 }

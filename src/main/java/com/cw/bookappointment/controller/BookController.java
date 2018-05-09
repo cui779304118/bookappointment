@@ -25,7 +25,7 @@ public class BookController {
 	
 	private static Logger logger = LoggerFactory.getLogger(BookController.class);
 	
-	@Autowired
+//	@Autowired
 	BookService bookService;
 	
 	//获取图书馆列表

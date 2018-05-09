@@ -47,4 +47,7 @@
 	select <include refid="field"/> from <include refid="tableName"/> order by id
 	limit #{offset},#{pageCount}
 </select>
+<select id="queryByStuNumAndPassword" resultMap="studentMap">
+	select  <include refid="field"/> from <include refid="tableName"/> where studentNum=#{studentNum} and password = #{password}
+</select>
 </mapper>

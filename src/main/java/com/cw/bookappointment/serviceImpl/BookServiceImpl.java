@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cw.bookappointment.constant.Constant;
-import com.cw.bookappointment.controller.BookController;
 import com.cw.bookappointment.dao.IAppointmentDao;
 import com.cw.bookappointment.dao.IBookDao;
 import com.cw.bookappointment.entity.Appointment;
@@ -16,7 +15,7 @@ import com.cw.bookappointment.service.BookService;
 
 public class BookServiceImpl implements BookService {
 
-	private static Logger logger = LoggerFactory.getLogger(BookController.class);
+	private static Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 	@Autowired
 	private IBookDao bookDao;
 	@Autowired
