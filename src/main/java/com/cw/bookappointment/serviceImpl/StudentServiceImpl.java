@@ -1,9 +1,15 @@
 package com.cw.bookappointment.serviceImpl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cw.bookappointment.dao.IStudentInfoDao;
 import com.cw.bookappointment.entity.StudentInfo;
+import com.cw.bookappointment.util.ResultOperationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,9 @@ import com.cw.bookappointment.entity.Student;
 import com.cw.bookappointment.service.StudentService;
 import com.cw.bookappointment.util.MD5Util;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Service("studentService")
 public class StudentServiceImpl implements StudentService {
 
@@ -25,7 +34,47 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private IStudentInfoDao studentInfoDao;
-	
+
+	public JSONObject login(JSONObject data, HttpServletRequest request) {
+		String studentNum = data.getString("studentNum");
+		Student student = queryByNumAndPassword(studentNum,data.getString("password"));
+		if(null == student){
+			return ResultOperationUtil.generateFailResult("用户名或密码错误！");
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("studentNum", studentNum);
+		return ResultOperationUtil.generateCodeResult(0, "恭喜您，登陆成功！");
+	}
+
+	public JSONObject register(JSONObject data, HttpServletRequest request) {
+		StudentInfo studentInfo = new StudentInfo();
+		studentInfo.setClazz(data.getString("clazz"));
+		studentInfo.setMajor(data.getString("major"));
+		studentInfo.setAge(data.getInteger("age"));
+		studentInfo.setSex(data.getInteger("sex"));
+		try {
+			studentInfo.setAdmissionDate(parse2Date(data.getString("admissionDate")));
+		}catch (ParseException e){
+			logger.error("日期解析错误！");
+			return  ResultOperationUtil.generateFailResult("参数异常！");
+		}
+		int studentInfoId = insertStudentInfo(studentInfo);
+		if(studentInfoId == 0){
+			return ResultOperationUtil.generateFailResult("服务器异常！");
+		}
+		Student student = new Student();
+		student.setStudentNum(data.getString("studentNum"));
+		student.setPassword(data.getString("password"));
+		student.setStudentInfoId(studentInfoId);
+		int studentId = addStudent(student);
+		if (studentId == 0){
+			return  ResultOperationUtil.generateFailResult("服务器异常！");
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("studentNum",data.getString("studentNum"));
+		return ResultOperationUtil.generateCodeResult(0,"恭喜您，注册成功！");
+	}
+
 	public Integer addStudent(Student student) {
 		String password = MD5Util.generateMD5(student.getPassword());
 		if(StringUtils.isEmpty(password)){
@@ -111,5 +160,10 @@ public class StudentServiceImpl implements StudentService {
 			logger.error("studentService: 插入studentInfo异常，exception:{} " , new Object[]{e.getMessage()});
 		}
 		return studentInfo;
+	}
+
+	private Date parse2Date(String dateString) throws ParseException {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return  format.parse(dateString);
 	}
 }

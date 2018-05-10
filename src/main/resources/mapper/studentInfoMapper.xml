@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.bookappointment.dao.IStudentInfoDao">
+    <resultMap id="studentInfoMap" type="studentInfo">
+        <result property="studentInfoId" column="studentInfoId"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="clazz" column="class"/>
+        <result property="major" column="major"/>
+        <result property="admissionDate" column="admissionDate"/>
+    </resultMap>
+
+    <sql id="tableName">
+        studentInfo
+    </sql>
+
+    <sql id="field">
+        studentInfoId,sex,age,class,major,admissionDate
+    </sql>
+
+    <insert id="save" parameterType="studentInfo" useGeneratedKeys="true" keyProperty="studentInfoId">
+        insert into <include refid="tableName"/> (sex,age,class,major,admissionDate)
+        values
+        (#{sex},#{age},#{clazz},#{major},#{admissionDate})
+    </insert>
+
+    <select id="get" parameterType="int" resultMap="studentInfoMap">
+        select <include refid="field"/> from  <include refid="tableName"/> where
+        studentInfoId = #{studentInfoId}
+    </select>
+
+</mapper>

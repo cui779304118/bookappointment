@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.cw.bookappointment.entity.Student;
 import com.cw.bookappointment.entity.StudentInfo;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface StudentService {
 
 	/**
@@ -54,4 +56,19 @@ public interface StudentService {
 	 * @return
 	 */
 	public StudentInfo getStudentInfo(int studentInfoId);
+
+	/**
+	 *注册接口
+	 * @param data
+	 * @return
+	 */
+	public JSONObject register(JSONObject data, HttpServletRequest request);
+
+	/**
+	 * 登录接口
+	 * @param data
+	 * @param request
+	 * @return
+	 */
+	public JSONObject login (JSONObject data, HttpServletRequest request);
 }
