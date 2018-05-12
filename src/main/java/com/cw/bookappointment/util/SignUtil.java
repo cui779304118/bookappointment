@@ -1,6 +1,7 @@
 package com.cw.bookappointment.util;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +24,9 @@ public class SignUtil {
 //        }
         String studentNum = data.getString("studentNum");
         String timeStamp = data.getString("timeStamp");
-        builder.append("studentNum").append("=").append(studentNum);
+        if(!StringUtils.isEmpty(studentNum)){
+            builder.append("studentNum").append("=").append(studentNum);
+        }
         builder.append("timeStamp").append("=").append(timeStamp);
         builder.append(secret);
         System.out.println(builder.toString());

@@ -3,7 +3,6 @@ package com.cw.bookappointment.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cw.bookappointment.entity.Student;
-import com.cw.bookappointment.entity.StudentInfo;
 import com.cw.bookappointment.service.StudentService;
 import com.cw.bookappointment.util.EnvMyBean;
 import com.cw.bookappointment.util.ResultOperationUtil;
@@ -18,11 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -52,11 +46,11 @@ public class StudentController {
             logger.error("注册接口:参数校验失败！exception: " +  data.toJSONString());
             return ResultOperationUtil.generateFailResult("参数异常！");
         }
-//        //校验秘钥是否通过
-//        if(!SignUtil.isSignValid(sign,data,envMyBean.getProperty("secret"))){
-//            logger.error("注册接口：身份认证失败！参数：" + data.toJSONString());
-//            return ResultOperationUtil.generateFailResult("身份认证失败！");
-//        }
+        //校验秘钥是否通过
+        if(!SignUtil.isSignValid(sign,data,envMyBean.getProperty("secret"))){
+            logger.error("注册接口：身份认证失败！参数：" + data.toJSONString());
+            return ResultOperationUtil.generateFailResult("身份认证失败！");
+        }
         //验证该学号是否注册过
         Student studentQue = new Student();
         studentQue.setStudentNum(studentNum);
@@ -88,5 +82,44 @@ public class StudentController {
         return  studentService.login(data,request);
     }
 
+    @RequestMapping(value = "/updatePassword",method = RequestMethod.POST)
+    public  JSONObject updatePassword(@RequestBody JSONObject data, HttpServletRequest request){
+        String password = data.getString("password");
+        String newPassword = data.getString("newPassword");
+        Long timeStamp = data.getLong("timeStamp");
+        String sign = data.getString("sign");
 
+        if(StringUtils.isEmpty(password) || StringUtils.isEmpty(newPassword)
+                || null == timeStamp || StringUtils.isEmpty(sign)){
+            logger.error("更新密码接口:参数校验失败！exception: " +  data.toJSONString());
+            return ResultOperationUtil.generateFailResult("参数异常！");
+        }
+        //校验秘钥是否通过
+        if(!SignUtil.isSignValid(sign,data,envMyBean.getProperty("secret"))){
+            logger.error("更新密码接口:身份认证失败！参数：" + data.toJSONString());
+            return ResultOperationUtil.generateFailResult("身份认证失败！");
+        }
+        return studentService.updatePassword(data, request);
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public JSONObject resetPassword(@RequestBody JSONObject data){
+        String studentNum = data.getString("studentNum");
+        String clazz = data.getString("clazz");
+        String major = data.getString("major");
+        String timeStamp = data.getString("timeStamp");
+        String sign = data.getString("sign");
+
+        if(StringUtils.isEmpty(studentNum) || StringUtils.isEmpty(clazz) || StringUtils.isEmpty(major)
+                || null == timeStamp || StringUtils.isEmpty(sign)){
+            logger.error("重置密码接口:参数校验失败！exception: " +  data.toJSONString());
+            return ResultOperationUtil.generateFailResult("参数异常！");
+        }
+        //校验秘钥是否通过
+        if(!SignUtil.isSignValid(sign,data,envMyBean.getProperty("secret"))){
+            logger.error("更新密码接口:身份认证失败！参数：" + data.toJSONString());
+            return ResultOperationUtil.generateFailResult("身份认证失败！");
+        }
+        return  studentService.resetPassword(data);
+    }
 }

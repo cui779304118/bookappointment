@@ -71,4 +71,18 @@ public interface StudentService {
 	 * @return
 	 */
 	public JSONObject login (JSONObject data, HttpServletRequest request);
+
+	/**
+	 *
+	 * @param data
+	 * @return
+	 */
+	public  JSONObject updatePassword(JSONObject data, HttpServletRequest request);
+
+	/**
+	 *
+	 * @param data
+	 * @return
+	 */
+	public  JSONObject resetPassword(JSONObject data);
 }

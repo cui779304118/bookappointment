@@ -4,11 +4,20 @@ import java.util.Date;
 
 public class StudentInfo {
     private int studentInfoId;
+    private String studentNum;
     private int sex;
     private  int age;
     private  String clazz;
     private  String major;
     private Date admissionDate;
+
+    public String getStudentNum() {
+        return studentNum;
+    }
+
+    public void setStudentNum(String studentNum) {
+        this.studentNum = studentNum;
+    }
 
     public int getStudentInfoId() {
         return studentInfoId;

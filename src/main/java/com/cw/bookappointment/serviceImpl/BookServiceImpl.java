@@ -54,7 +54,6 @@ public class BookServiceImpl implements BookService {
 		return book;
 	}
 
-	@Override
 	public Integer addBook(Book book) {
 		try {
 			bookDao.save(book);
@@ -64,7 +63,6 @@ public class BookServiceImpl implements BookService {
 		return book.getBookId();
 	}
 
-	@Override
 	public boolean updateBook(Book book) {
 		boolean isUpdateSuccess = false;
 		try {
@@ -76,7 +74,6 @@ public class BookServiceImpl implements BookService {
 		return isUpdateSuccess;
 	}
 
-	@Override
 	public boolean deleteBook(Integer bookId) {
 		boolean isDeleteSuccess = false;
 		try {
@@ -87,7 +84,6 @@ public class BookServiceImpl implements BookService {
 		}
 		return isDeleteSuccess;
 	}
-	@Override
 	public Integer appoint(String studentNum, String bookId){
 		try {
 			Appointment appointmentSel = appointmentDao.getByStuIdAndBookId(studentNum, bookId);

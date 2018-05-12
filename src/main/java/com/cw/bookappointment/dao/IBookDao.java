@@ -10,4 +10,5 @@ import com.cw.bookappointment.entity.PageModel;
 public interface IBookDao extends IGenericDao<Book, Integer>{
 
 	public List<Book> listByPage(PageModel pageModel);
+	public int decreaseNumberByVersion(Book book);
 }

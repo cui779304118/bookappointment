@@ -20,7 +20,7 @@ import com.cw.bookappointment.entity.Book;
 import com.cw.bookappointment.service.BookService;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
 	
 	private static Logger logger = LoggerFactory.getLogger(BookController.class);

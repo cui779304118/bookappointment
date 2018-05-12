@@ -35,6 +35,33 @@ public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private IStudentInfoDao studentInfoDao;
 
+	public JSONObject resetPassword(JSONObject data) {
+		String studentNum = data.getString("studentNum");
+		String clazz = data.getString("clazz");
+		String major = data.getString("major");
+
+		StudentInfo infoQue = studentInfoDao.getByStudentNum(studentNum);
+		if(null == infoQue || !clazz.equals(infoQue.getClazz()) || !major.equals(infoQue.getMajor())){
+			return ResultOperationUtil.generateFailResult("认证失败！");
+		}
+		return ResultOperationUtil.generateCodeResult(0, "认证成功！");
+	}
+
+	public JSONObject updatePassword(JSONObject data, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String studentNum = (String) session.getAttribute("studentNum");
+		String password = data.getString("password");
+		String newPassword = data.getString("newPassword");
+
+		Student student = queryByNumAndPassword(studentNum, password);
+		if(student == null){
+			return ResultOperationUtil.generateFailResult("密码错误，请重新输入！");
+		}
+		student.setPassword(newPassword);
+		updateStudent(student);
+		return ResultOperationUtil.generateCodeResult(0, "更新成功！");
+	}
+
 	public JSONObject login(JSONObject data, HttpServletRequest request) {
 		String studentNum = data.getString("studentNum");
 		Student student = queryByNumAndPassword(studentNum,data.getString("password"));
@@ -52,6 +79,7 @@ public class StudentServiceImpl implements StudentService {
 		studentInfo.setMajor(data.getString("major"));
 		studentInfo.setAge(data.getInteger("age"));
 		studentInfo.setSex(data.getInteger("sex"));
+		studentInfo.setStudentNum(data.getString("studentNum"));
 		try {
 			studentInfo.setAdmissionDate(parse2Date(data.getString("admissionDate")));
 		}catch (ParseException e){

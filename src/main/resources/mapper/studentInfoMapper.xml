@@ -3,6 +3,7 @@
 <mapper namespace="com.cw.bookappointment.dao.IStudentInfoDao">
     <resultMap id="studentInfoMap" type="studentInfo">
         <result property="studentInfoId" column="studentInfoId"/>
+        <result property="studentNum" column="studentNum"/>
         <result property="sex" column="sex"/>
         <result property="age" column="age"/>
         <result property="clazz" column="class"/>
@@ -15,18 +16,45 @@
     </sql>
 
     <sql id="field">
-        studentInfoId,sex,age,class,major,admissionDate
+        studentInfoId,studentNum,sex,age,class,major,admissionDate
     </sql>
 
     <insert id="save" parameterType="studentInfo" useGeneratedKeys="true" keyProperty="studentInfoId">
-        insert into <include refid="tableName"/> (sex,age,class,major,admissionDate)
+        insert into <include refid="tableName"/> (studentNum,sex,age,class,major,admissionDate)
         values
-        (#{sex},#{age},#{clazz},#{major},#{admissionDate})
+        (#{studentNum},#{sex},#{age},#{clazz},#{major},#{admissionDate})
     </insert>
 
     <select id="get" parameterType="int" resultMap="studentInfoMap">
         select <include refid="field"/> from  <include refid="tableName"/> where
         studentInfoId = #{studentInfoId}
     </select>
+
+    <select id="getByStudentNum" parameterType="String" resultMap="studentInfoMap">
+        select <include refid="field"/> from  <include refid="tableName"/> where
+        studentNum = #{studentNum}
+    </select>
+
+    <update id="update" parameterType="studentInfo">
+        update <include refid="tableName"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="clazz != null and clazz !=''">
+                clazz = #{clazz},
+            </if>
+            <if test="major !=null and major !=''">
+                major = #{major},
+            </if>
+            <if test="admissionDate !=null and admissionDate !=''">
+                admissionDate = #{admissionDate},
+            </if>
+        </trim>
+        where  studentNum = #{studentNum}
+    </update>
 
 </mapper>

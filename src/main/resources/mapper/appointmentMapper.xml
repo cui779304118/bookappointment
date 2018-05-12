@@ -24,7 +24,7 @@
 	<if test="bookId != null">
 	 and bookId = #{bookId}
 	</if>
-	<if test="studentNum != null">
+	<if test="studentNum != null and studentNum !=''">
 	and studentNum = #{studentNum}
 	</if>
 	<if test="appointTime != null">
@@ -50,7 +50,7 @@
 </sql>
 
 <insert id="save" parameterType="appointment" useGeneratedKeys="true" keyProperty="id">
-	insert into <include refid="tableName"/> (name,bookId,studentNum) values (#{name},#{bookId},#{studentNum})
+	insert into <include refid="tableName"/> (bookId,studentNum) values (#{bookId},#{studentNum})
 </insert>
 <delete id="delete" parameterType="int">
 	delete from <include refid="tableName"/> where id = #{id}

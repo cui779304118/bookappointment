@@ -5,8 +5,9 @@
 <resultMap type="book" id="bookMap">
 	<id property="bookId" column="bookId"/>
 	<result property="name" column="name"/> 
-	<result property="introdction" column="introdction"/>
+	<result property="introduction" column="introduction"/>
 	<result property="number" column="number"/>
+	<result property="version" column="version"/>
 </resultMap>
 
 <sql id="tableName">
@@ -14,7 +15,7 @@
 </sql>
 
 <sql id="field">
-	bookId,name,introdction,number
+	bookId,name,introduction,number,version
 </sql>
 
 <sql id="searchCondition">
@@ -22,16 +23,27 @@
 	 and bookId = #{bookId}
 	</if>
 	<if test="name != null and name !=''">
-	and name = #{name}
+	and name like  "%"#{name}"%"
+	</if>
+	<if test="name != null and name !=''">
+		or introduction like  "%"#{name}"%"
 	</if>
 </sql>
 
 <insert id="save" parameterType="book" useGeneratedKeys="true" keyProperty="bookId">
-	insert into <include refid="tableName"/> (name,introdction,number) values (#{name},#{introdction},#{number})
+	insert into <include refid="tableName"/> (name,introduction,number) values (#{name},#{introduction},#{number})
 </insert>
 <delete id="delete" parameterType="int">
 	delete from <include refid="tableName"/> where bookId = #{bookId}
 </delete>
+
+	<update id="decreaseNumberByVersion" parameterType="book">
+		update <include refid="tableName"/>
+		set number = number -1,
+		version = version + 1
+		where bookId = #{bookId}
+		and version = #{version}
+	</update>
 
 <update id="update" parameterType="book">
 	update <include refid="tableName"/> 
@@ -39,8 +51,8 @@
 		<if test="name !=null and name !=''">
 			name=#{name},
 		</if>
-		<if test="introdction !=null and introdction !='' ">
-			introdction=#{introdction},
+		<if test="introduction !=null and introduction !='' ">
+			introduction=#{introduction},
 		</if>
 		<if test="number !=null">
 			number = #{number}
@@ -62,4 +74,12 @@
 	select <include refid="field"/> from <include refid="tableName"/> order by bookId
 	limit #{offset},#{pageCount}
 </select>
+	
+	<select id="getbyIdList" parameterType="List" resultMap="bookMap">
+		select <include refid="field"/> from <include refid="tableName"/>
+		where bookId in
+		<foreach collection="ids" item="bookId" open="(" close=")" separator=",">
+			#{bookId}
+		</foreach>
+	</select>
 </mapper>

@@ -26,10 +26,10 @@ public class BookDaoTest {
 		return bookDao;
 	}
 	
-	public static Book createBook(String name,String introdction,Integer number){
+	public static Book createBook(String name,String introduction,Integer number){
 		Book book = new Book();
 		book.setName(name);
-		book.setIntrodction(introdction);
+		book.setIntroduction(introduction);
 		book.setNumber(number);
 		return book;
 	}
