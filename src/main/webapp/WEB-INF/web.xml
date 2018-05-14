@@ -13,6 +13,14 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
       <param-value>classpath:env/dev/applicationContext.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+    <!--<multipart-config>
+      <location>F:/java/upload/bookappointment</location>
+      文件的最大大小，单位为字节。默认没有限制
+      <max-file-size>5242880</max-file-size>
+      <max-request-size>10485760</max-request-size>
+      文件大小阈值，当大于这个阈值时将写入到磁盘，否则在内存中。默认值为0
+      <file-size-threshold>0</file-size-threshold>
+    </multipart-config>-->
   </servlet>
   
   <servlet-mapping>

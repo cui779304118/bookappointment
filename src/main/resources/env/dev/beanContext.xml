@@ -12,7 +12,8 @@
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
+<!--自动注册RequstHandlerMapping与RequestMappingHandlerAdapter两个Bean,
+这是Spring MVC为@Controller分发请求必需的，-->
  <mvc:annotation-driven/>
  <context:component-scan base-package="com.cw.bookappointment"/>
 
@@ -38,12 +39,21 @@
  		</list>
  	</property>
 </bean>
- 
-<!--  <mvc:interceptors>
- 	<mvc:interceptor>
- 		<mvc:mapping path="/*"/>
- 		<bean class="com.cw.bookappointment.AuthorizedInterceptor"></bean>
- 	</mvc:interceptor>
- </mvc:interceptors> -->
+
+	<!-- 支持上传文件 -->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<!-- 100M -->
+		<property name="maxUploadSize" value="104857600"></property>
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
+
+	<!--path后面一定是两个**-->
+	<!-- <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.cw.bookappointment.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
  
  </beans>
