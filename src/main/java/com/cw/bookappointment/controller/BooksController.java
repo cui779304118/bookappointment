@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cw.bookappointment.entity.Book;
 import com.cw.bookappointment.service.BooksService;
+import com.cw.bookappointment.serviceImpl.BooksServiceImpl;
 import com.cw.bookappointment.util.EnvMyBean;
 import com.cw.bookappointment.util.ResultOperationUtil;
 import com.cw.bookappointment.util.SignUtil;
@@ -22,7 +23,7 @@ public class BooksController {
     private Logger logger = LoggerFactory.getLogger(BooksController.class);
 
     @Autowired
-    private BooksService booksService;
+    private BooksServiceImpl booksService;
 
     @Autowired
     private EnvMyBean envMyBean;
@@ -44,7 +45,8 @@ public class BooksController {
             logger.error("查询图书接口：身份认证失败！参数：" + data.toJSONString());
             return ResultOperationUtil.generateFailResult("身份认证失败！");
         }
-        return booksService.listAll( pageNum,pageCount );
+//        return booksService.listAll( pageNum,pageCount );
+        return booksService.listAllByMemory(pageNum,pageCount);
     }
 
     @RequestMapping(value = "/listByQuery" , method = RequestMethod.POST)
@@ -89,7 +91,9 @@ public class BooksController {
     }
 
     @RequestMapping(value = "/appointmentBook",method = RequestMethod.POST)
-    public JSONObject appointmentBook(@RequestBody JSONObject data, @SessionAttribute String studentNum){
+//    public JSONObject appointmentBook(@RequestBody JSONObject data, @SessionAttribute String studentNum){
+    public JSONObject appointmentBook(@RequestBody JSONObject data){
+        String studentNum = data.getString("studentNum");
         Integer bookId = data.getInteger("bookId");
         Long timeStamp = data.getLong("timeStamp");
         String sign = data.getString("sign");

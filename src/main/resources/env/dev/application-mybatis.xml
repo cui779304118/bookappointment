@@ -48,7 +48,7 @@
    	<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
    </bean>
    
-   <!--(事务管理)transaction manager,use JtaTransactionManager for global tx  -->
+   <!--(事务管理)配置事务管理器 -->
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
    	<property name="dataSource" ref="dataSourceWR"/>
    	<property name="rollbackOnCommitFailure" value="true"/>

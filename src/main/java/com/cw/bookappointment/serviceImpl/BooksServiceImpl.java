@@ -13,8 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service("booksService")
@@ -25,6 +29,8 @@ public class BooksServiceImpl implements BooksService {
     private IBookDao bookDao;
     @Autowired
     private IAppointmentDao appointmentDao;
+
+    private List<Book> allBooks;
 
     public JSONObject listAll(int pageNum, int pageCount) {
         PageModel pageModel = new PageModel();
@@ -44,6 +50,36 @@ public class BooksServiceImpl implements BooksService {
         JSONObject data = new JSONObject();
         data.put("bookList",bookList);
         return ResultOperationUtil.generateSuccessResult(data);
+    }
+
+    /**
+     * 用于测试守护线程定时去数据库取得数据并刷新内存
+     * @return
+     */
+    public JSONObject listAllByMemory(int pageNum, int pageCount){
+        Integer recordCount = allBooks.size();
+        if (recordCount == null || recordCount == 0){
+            return ResultOperationUtil.generateFailResult("查询异常！");
+        }
+        int fromIndex = (pageNum - 1)*pageCount;
+        int toIndex = fromIndex + pageCount;
+        toIndex = toIndex > recordCount ? recordCount : toIndex;
+        JSONObject data = new JSONObject();
+        data.put("bookList", allBooks.subList(fromIndex, toIndex));
+        return ResultOperationUtil.generateSuccessResult(data);
+    }
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<Integer>(){
+            {
+                add(1);
+                add(2);
+                add(3);
+                add(4);
+            }
+        };
+        List<Integer> subList = list.subList(0,4);
+        System.out.println(Arrays.toString(subList.toArray()));
     }
 
     public JSONObject listByQuery(String queryWord) {
@@ -104,7 +140,8 @@ public class BooksServiceImpl implements BooksService {
         return returnData;
     }
 
-    private int executeAppointment(String studentNum, int bookId){
+//    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public int executeAppointment(String studentNum, int bookId){
         //如果该书已经被预约过了
         if(isRepeatAppointment(studentNum,bookId)){
             return Constant.FAIL_REPEAT_APPOINTMENT;
@@ -197,5 +234,13 @@ public class BooksServiceImpl implements BooksService {
             logger.error("bookService:通过ids查询bookList异常,exception:{}", new Object[]{e.getMessage()});
         }
         return  bookList;
+    }
+
+    public void setAllBooks(List<Book> allBooks) {
+        this.allBooks = allBooks;
+    }
+
+    public List<Book> getAllBooks() {
+        return allBooks;
     }
 }

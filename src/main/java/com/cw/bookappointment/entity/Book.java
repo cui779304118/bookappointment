@@ -43,4 +43,20 @@ public class Book {
 	public String toString(){
 		return "bookId:" + bookId + " name:" + name + " introduction:" + introduction + " number:" + number;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (null == obj){
+			return false;
+		}
+		if (! (obj instanceof  Book)){
+			return false;
+		}
+		if (!((Book) obj).name.equals(name)){
+			return false;
+		}
+		if (!((Book) obj).introduction.equals(introduction)){
+			return false;
+		}
+		return true;
+	}
 }

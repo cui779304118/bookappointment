@@ -75,11 +75,11 @@
 	limit #{offset},#{pageCount}
 </select>
 	
-	<select id="getbyIdList" parameterType="List" resultMap="bookMap">
-		select <include refid="field"/> from <include refid="tableName"/>
-		where bookId in
-		<foreach collection="ids" item="bookId" open="(" close=")" separator=",">
-			#{bookId}
-		</foreach>
-	</select>
+<select id="getbyIdList" parameterType="List" resultMap="bookMap">
+	select <include refid="field"/> from <include refid="tableName"/>
+	where bookId in
+	<foreach collection="ids" item="bookId" open="(" close=")" separator=",">
+		#{bookId}
+	</foreach>
+</select>
 </mapper>

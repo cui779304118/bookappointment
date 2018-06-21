@@ -10,7 +10,7 @@ public class SignUtil {
 
     public static void main(String[] args) {
         JSONObject data = new JSONObject();
-        data.put("studentNum","2016215106");
+//        data.put("studentNum","2016215106");
         data.put("timeStamp",1525881600000L);
         System.out.println(generateSign(data,"djVB1R5EwMTWUDTWSqyiInsB"));
     }
@@ -24,9 +24,9 @@ public class SignUtil {
 //        }
         String studentNum = data.getString("studentNum");
         String timeStamp = data.getString("timeStamp");
-        if(!StringUtils.isEmpty(studentNum)){
-            builder.append("studentNum").append("=").append(studentNum);
-        }
+//        if(!StringUtils.isEmpty(studentNum)){
+//            builder.append("studentNum").append("=").append(studentNum);
+//        }
         builder.append("timeStamp").append("=").append(timeStamp);
         builder.append(secret);
         System.out.println(builder.toString());
